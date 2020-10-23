@@ -1,0 +1,33 @@
+#include <bits/stdc++.h>
+using namespace std;
+# define INF 0x3f3f3f3f
+
+int main() {
+    long long n, m;
+    cin >> n >> m;
+    vector<pair<long long, long long> > adj[n + 1];
+    for (int i = 0; i < m; i++) {
+        long long u, v, w;
+        cin >> u >> v >> w;
+        adj[u].push_back(make_pair(v, w));
+        adj[v].push_back(make_pair(u, w));
+    }
+    vector<long long> dist(n + 1, INF);
+    queue<pair<long long, long long> > q;
+    q.push(make_pair(1, 0));
+    dist[1] = 0;
+    pair<long long, long long> p;
+    while (!q.empty()) {
+        p = q.front();
+        q.pop();
+        for (int i = 0; i < (int)adj[p.first].size(); i++) {
+            if (dist[adj[p.first][i].first] > max(dist[p.first], adj[p.first][i].second)) {
+                dist[adj[p.first][i].first] = max(dist[p.first], adj[p.first][i].second);
+            q.push(make_pair(adj[p.first][i].first, dist[adj[p.first][i].first]));
+        }
+    }
+}
+    if(dist[n] == INF) cout << "NO PATH EXISTS" << endl;
+    else cout << dist[n] << endl;
+}
+
